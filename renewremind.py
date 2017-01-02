@@ -12,7 +12,10 @@ subject = '【更新提示】'	# email 中的主题
 content = ''			# email 中的内容
 isRenew = False			# 是否有更新
 record_file = os.path.join(sys.path[0],'record.dat')      # 记录文件
+conf_file = os.path.join(sys.path[0],'conf.ini')          # 配置文件
 renew_dict = {}                 # 更新记录
+my_email = ''                      # 邮箱地址
+my_password = ''                   # 邮箱授权码
 
 def get_html(url,timeout=None):
     headers = {'User-Agent':'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6'  }
@@ -22,12 +25,13 @@ def get_html(url,timeout=None):
 
 def send_email(sub,cont):
     # send email to notice new WestWorld is coming
-    sender = '951376975@qq.com'			# 发送方
-    receiver = ['951376975@qq.com']		# 收件方
-    subject = sub				# 邮件主题
-    smtpserver = 'smtp.qq.com'			# 邮箱服务器
-    username = '951376975@qq.com'		# 用户名
-    password = 'khjpspljoawzbeij'		# 授权码
+    global my_email,my_password
+    sender = my_email                   # 发送方
+    receiver = [my_email]               # 收件方
+    subject = sub                       # 邮件主题
+    smtpserver = 'smtp.qq.com'          # 邮箱服务器
+    username = my_email                 # 用户名
+    password = my_password		# 授权码
 
     msg = MIMEText(cont, 'html', 'utf8')	# 设置内容
     msg['Subject'] = Header(subject, 'utf8')	# 设置主题
@@ -40,7 +44,18 @@ def send_email(sub,cont):
     smtp.quit()
 
 def Init():
-    global renew_dict
+    global renew_dict,my_email,my_password
+    print '正在加载邮箱地址和授权码……'
+    try:
+        fp = open(conf_file,'r')
+    except Exception,e:
+        print '加载失败，conf.ini文件不存在'
+        raise Exception,e
+    lines = fp.readlines()
+    my_email = lines[1]     # 加载邮箱地址
+    my_password = lines[3]  # 加载邮箱授权码
+    fp.close()
+
     print '正在加载更新记录……'
     # 提取更新情况记录
     try:
@@ -58,12 +73,7 @@ def Init():
 
 
 def RenewCheck(key,src_url,des_url,pattern_str,charset):
-    # 参数介绍 :
-    # key - 检查对象，例如：西部世界、扳手少年等
-    # src_url - 检查对象的网站地址
-    # des_url - 如果有更新，提示中所指向的跳转地址
-    # pattern_str - 匹配正则表达式
-    # charset - 检查对象网站的编码
+    # 检查更新
     global subject,content,isRenew,renew_dict
     host = 'http://'+src_url.split('//')[1].split('/')[0]   # 检查网站的host地址
     html = get_html(src_url,timeout).decode(charset)        # 获得页面源码
@@ -113,6 +123,12 @@ def main():
     # 检查所有更新，并输出提示信息
     # 函数原型：
     # def RenewCheck( key,src_url,des_url,pattern_str,charset )
+    # 参数介绍 :
+    # key           - 检查对象，例如：西部世界、扳手少年等
+    # src_url       - 检查对象的网站地址
+    # des_url       - 如果有更新，提示中所指向的跳转地址
+    # pattern_str   - 匹配正则表达式
+    # charset       - 检查对象网站的编码
     RenewCheck('扳手少年',\
             'http://ac.qq.com/Comic/ComicInfo/id/520794',\
             'http://ac.qq.com/ComicView/index/id/520794/cid/176',\
@@ -122,22 +138,25 @@ def main():
 
     RenewCheck('斗战狂潮',\
             'http://www.qidian.com/Book/1003694333.aspx',\
-            'http://www.qidian.com',\
+            'http://www.booktxt.net/2_2322/',\
             r'</b><a class="blue" href=".*?" data-eid="qd_G19" data-cid=".*?" title=".*?" target="_blank">(.*?)</a><i>.*?</i><em class="time">.*?</em>',\
             'utf8'\
             )   # 小说：斗战狂潮
 
     RenewCheck('雪鹰领主',\
-            'http://www.qidian.com/Book/1003694333.aspx',\
-            'http://www.qidian.com',\
+            'http://book.qidian.com/info/3513193',\
+            'http://www.booktxt.net/0_119/',\
             r'</b><a class="blue" href=".*?" data-eid="qd_G19" data-cid=".*?" title=".*?" target="_blank">(.*?)</a><i>.*?</i><em class="time">.*?</em>',\
             'utf8'\
-            )   # 小说：斗战狂潮
+            )   # 小说：雪鹰领主
 
     if isRenew:
         send_email(subject+'有更新！',content)
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except Exception,e:
+        print '[ERROR]:%s'%e
 
