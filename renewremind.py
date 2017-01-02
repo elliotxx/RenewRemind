@@ -6,13 +6,13 @@ import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
 
-timeout = 30                    # 超时时间
+timeout = 30                             # 超时时间
 charset = 'utf-8'		# 请求页面的编码格式
 subject = '【更新提示】'	# email 中的主题
 content = ''			# email 中的内容
 isRenew = False			# 是否有更新
 record_file = os.path.join(sys.path[0],'record.dat')      # 记录文件
-conf_file = os.path.join(sys.path[0],'conf.ini')          # 配置文件
+conf_file = os.path.join(sys.path[0],'conf.ini')                # 配置文件
 renew_dict = {}                 # 更新记录
 my_email = ''                      # 邮箱地址
 my_password = ''                   # 邮箱授权码
@@ -24,7 +24,7 @@ def get_html(url,timeout=None):
     return response.read()
 
 def send_email(sub,cont):
-    # send email to notice new WestWorld is coming
+    # send email
     global my_email,my_password
     sender = my_email                   # 发送方
     receiver = [my_email]               # 收件方
@@ -52,8 +52,9 @@ def Init():
         print '加载失败，conf.ini文件不存在'
         raise Exception,e
     lines = fp.readlines()
-    my_email = lines[1]     # 加载邮箱地址
-    my_password = lines[3]  # 加载邮箱授权码
+    my_email = lines[1].strip()     # 加载邮箱地址
+    my_password = lines[3].strip()  # 加载邮箱授权码
+    print my_email,my_password
     fp.close()
 
     print '正在加载更新记录……'
@@ -138,14 +139,14 @@ def main():
 
     RenewCheck('斗战狂潮',\
             'http://www.qidian.com/Book/1003694333.aspx',\
-            'http://www.booktxt.net/2_2322/',\
+            'http://www.booktxt.net/2_2322',\
             r'</b><a class="blue" href=".*?" data-eid="qd_G19" data-cid=".*?" title=".*?" target="_blank">(.*?)</a><i>.*?</i><em class="time">.*?</em>',\
             'utf8'\
             )   # 小说：斗战狂潮
 
     RenewCheck('雪鹰领主',\
             'http://book.qidian.com/info/3513193',\
-            'http://www.booktxt.net/0_119/',\
+            'http://www.booktxt.net/0_119',\
             r'</b><a class="blue" href=".*?" data-eid="qd_G19" data-cid=".*?" title=".*?" target="_blank">(.*?)</a><i>.*?</i><em class="time">.*?</em>',\
             'utf8'\
             )   # 小说：雪鹰领主
