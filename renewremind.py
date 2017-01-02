@@ -54,7 +54,6 @@ def Init():
     lines = fp.readlines()
     my_email = lines[1].strip()     # 加载邮箱地址
     my_password = lines[3].strip()  # 加载邮箱授权码
-    print my_email,my_password
     fp.close()
 
     print '正在加载更新记录……'
