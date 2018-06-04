@@ -27,14 +27,7 @@ def send_email(sub,cont):
     # send email
     global my_email,my_password
     sender = my_email                   # 发送方
-    if sub=='【更新提示】海大研究生招生网 有更新！':
-        receiver = [my_email,'1074073420@qq.com','1505415678@qq.com','630392694@qq.com']
-    elif sub=='【更新提示】青岛事业单位招聘 有更新！':
-        receiver = [my_email,'1074073420@qq.com']
-    elif '内蒙古大学研究生院' in sub:
-        receiver = [my_email,'1074073420@qq.com','1505415678@qq.com','630392694@qq.com']
-    else:
-        receiver = [my_email]               # 收件方
+    receiver = [my_email]               # 收件方
     subject = sub                       # 邮件主题
     smtpserver = 'smtp.qq.com'          # 邮箱服务器
     username = my_email                 # 用户名
@@ -177,21 +170,8 @@ def main():
                'http://www.booktxt.net/5_5014/',\
                 r'<a class="blue" href=".*?" data-eid="qd_G19" data-cid=".*?" title=".*?" target="_blank">(.*?)</a><i>.*?</i><em class="time">.*?</em>',\
                 'utf8'\
-        ),   # 小说：伊塔之柱
+        )   # 小说：伊塔之柱
 
-        ('青岛事业单位招聘',\
-               'http://www.qdhrss.gov.cn/pages/wsbs/syzp/index.html',\
-               'http://www.qdhrss.gov.cn/pages/wsbs/syzp/index.html',\
-                r'<ul class="listbgdot_list">.*?<li><span class="time">.*?</span>.*?<div class="text"><a href=".*?">(.*?)</a></div>',\
-                'gbk'\
-        ),   # 公告：青岛事业单位招聘 
-
-        ('青岛公务员招录',\
-               'http://www.qdhrss.gov.cn/pages/wsbs/gwyzl/index.html',\
-               'http://www.qdhrss.gov.cn/pages/wsbs/gwyzl/index.html',\
-                r'<ul class="listbgdot_list">.*?<li><span class="time">.*?</span>.*?<div class="text"><a href=".*?">(.*?)</a></div>',\
-                'gbk'\
-        )   # 公告：青岛公务员招录
     ]
 
     for renewObj in renewObjList:
