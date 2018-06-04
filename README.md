@@ -1,4 +1,4 @@
-# RenewRemind - 一个 小说/番剧/漫画 更新提醒脚本
+## RenewRemind - 一个 小说/番剧/漫画 更新提醒脚本
 
 ## 简介
 关注的 **小说/番剧/漫画** 如果有更新，立刻给你发送提醒邮件。
@@ -13,19 +13,19 @@
 
 该脚本仅供参考。
 ## 如何使用
-###step 1. 将项目clone到本地
+### step 1. 将项目clone到本地
 
 ```
 git clone https://github.com/windcode/renewremind.git
 ```
 
-###step 2. 设置email用户名和授权码
+### step 2. 设置email用户名和授权码
 
 ![设置email用户名和授权码](https://github.com/windcode/renewremind/raw/master/screenshots/1.png)
 
 授权码获取方式：[什么是授权码，它又是如何设置？ - qq邮箱帮助中心](http://service.mail.qq.com/cgi-bin/help?subtype=1&&no=1001256&&id=28)
 
-###step 3. 运行脚本
+### step 3. 运行脚本
 
 ```
 python renewremind/renewremind.py
@@ -35,7 +35,7 @@ python renewremind/renewremind.py
 
 初次运行会发送当前更新情况。
 
-# 运行截图
+## 运行截图
 
 初次运行
 
@@ -50,7 +50,7 @@ python renewremind/renewremind.py
 ![更新检查函数](https://github.com/windcode/renewremind/raw/master/screenshots/4.png)
 
 
-##注意
+## 注意
 
 * 脚本默认仅支持qq邮箱。若要支持其它邮箱，请自行修改代码。
 * 测试环境为linux
